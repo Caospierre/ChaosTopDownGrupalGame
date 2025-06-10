@@ -83,3 +83,42 @@ crashlytics-build.properties
 /[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Flow/UnitOptions.db.meta
 /[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers
 /[Aa]ssets/Unity.VisualScripting.Generated/VisualScripting.Core/Property Providers.meta
+
+
+[Libraries]
+[Libraries]/Library/
+[Libraries]/Temp/
+[Libraries]/Obj/
+[Libraries]/Build/
+[Libraries]/Builds/
+[Libraries]/Logs/
+/Library/
+/Temp/
+
+# User-specific
+UserSettings/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+
+# OS files
+.DS_Store
+*.swp
+
+# Build artifacts
+*.apk
+*.aab
+*.app
+*.exe
+
+# Rider / VS
+/.idea
+.idea/
+.vs/
+*.dotCover
