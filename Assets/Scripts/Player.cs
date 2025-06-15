@@ -18,9 +18,16 @@ public class Player : MonoBehaviour
     public bool Interactuando { get => interactuando; set => interactuando = value; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void Awake()
     {
         anim = GetComponent<Animator>();
+    }
+
+    void Start()
+    {
+        transform.position = LocationManager.Instance.LastSavedPosition;
+        anim.SetFloat("inputH", LocationManager.Instance.LastSavedRotation.x);
+        anim.SetFloat("inputV", LocationManager.Instance.LastSavedRotation.y);
     }
 
     // Update is called once per frame
