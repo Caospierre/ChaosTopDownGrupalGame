@@ -50,6 +50,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velocidadMocimiento: 5
   radioInteraccion: 0.3
+  lives: 3
+  health: 100
+  isGameOver: 0
+  isReceivingDamage: 0
 --- !u!212 &4108267014925065860
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -177,7 +181,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!95 &6731405581629023716
 Animator:
   serializedVersion: 7
