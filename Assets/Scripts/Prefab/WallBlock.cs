@@ -16,20 +16,18 @@ namespace Prefab
         void Start()
         {
             currentHealth = maxHealth;
-            
+
             Transform warningObj = transform.Find("WarningText");
             if (warningObj != null)
             {
-                Debug.Log($"[Wall] get warning: {warningObj.name}");
+               // Debug.Log($"[Wall] get warning: {warningObj.name}");
 
                 warningText = warningObj.GetComponent<TextMesh>();
                 warningText.gameObject.SetActive(false);
             }
             else
             {
-                Debug.LogWarning($"[Wall] Error dont found warning");
-
-                
+//                Debug.LogWarning($"[Wall] Error dont found warning");
             }
         }
 
@@ -38,7 +36,7 @@ namespace Prefab
             if (warningTimer > 0f)
             {
                 warningTimer -= Time.deltaTime;
-                if (warningTimer <= 0f && currentHealth > 10)
+                if (warningTimer <= 0f && currentHealth > 10 && warningText != null)
                 {
                     warningText.gameObject.SetActive(false);
                 }
@@ -56,11 +54,11 @@ namespace Prefab
 
             if (warningText != null)
             {
-                Debug.Log($"[Wall] current health:  {currentHealth}.");
+                //Debug.Log($"[Wall] current health:  {currentHealth}.");
 
                 if (currentHealth <= 10 && currentHealth > 0)
                 {
-                    Debug.Log($"[Wall] holi");
+                    //Debug.Log($"[Wall] holi");
 
                     warningText.text = currentHealth <= 3
                         ? $"¡Colapsando! Vida: {currentHealth}"
@@ -68,27 +66,40 @@ namespace Prefab
 
                     warningText.color = Color.red;
                     warningText.gameObject.SetActive(true);
-                    warningTimer = 1f; // Mostrar por 1 segundo
+                    warningTimer = 1f;
 
                 }
                 else
                 {
-                    Debug.Log($"[Wall] boli");
+                   // Debug.Log($"[Wall] boli");
 
                     warningText.text = $"¡Deterioro! -{amount}";
                     warningText.color = Color.red;
                     warningText.gameObject.SetActive(true);
-                    warningTimer = 5f; // Mostrar por 1 segundo
+                    warningTimer = 5f;
                 }
             }
 
             if (currentHealth <= 0)
             {
-                Destroy(gameObject);
+                gameObject.SetActive(false); // No se destruye, se desactiva
                 return true;
             }
 
             return false;
+        }
+
+        public void Rebuild()
+        {
+            currentHealth = maxHealth;
+            gameObject.SetActive(true);
+
+            if (warningText != null)
+            {
+                warningText.gameObject.SetActive(false);
+            }
+
+            //Debug.Log($"[Wall] Rebuilt with {currentHealth} health.");
         }
     }
 }

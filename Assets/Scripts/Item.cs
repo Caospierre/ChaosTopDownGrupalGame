@@ -6,7 +6,15 @@ public class Item : MonoBehaviour, Interactuable
     [SerializeField] private GameManagerSO gameManager;
     public void Interactuar()
     {
-        gameManager.Inventario.NuevoItem(misDatos);
-        Destroy(this.gameObject);
+        try
+        {
+            gameManager.Inventario.NuevoItem(misDatos);
+            Debug.Log("→ Item agregado correctamente, ahora se destruirá");
+            Destroy(this.gameObject);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError("Error al intentar agregar el item: " + ex.Message);
+        }
     }
 }

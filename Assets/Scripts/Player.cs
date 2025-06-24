@@ -11,13 +11,25 @@ public class Player : MonoBehaviour
     private Vector3 puntoInteraccion;
     private Collider2D colliderDelante;
     private Animator anim;
+
     [SerializeField] private float velocidadMocimiento;
     [SerializeField] private float radioInteraccion;
     private bool interactuando;
 
+    [Tooltip("Vidas")]
+    [SerializeField] public float lives = 3f;
+
+    [Tooltip("Salud")]
+    [SerializeField] public float health = 100;
+
+    [Tooltip("¿El jugador ya perdió todas las vidas?")]
+    public bool isGameOver = false;
+
+    [Tooltip("¿Está recibiendo daño actualmente?")]
+    public bool isReceivingDamage = false;
+
     public bool Interactuando { get => interactuando; set => interactuando = value; }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
     {
         anim = GetComponent<Animator>();
@@ -30,7 +42,6 @@ public class Player : MonoBehaviour
         anim.SetFloat("inputV", LocationManager.Instance.LastSavedRotation.y);
     }
 
-    // Update is called once per frame
     void Update()
     {
         LecturaInputs();
@@ -109,5 +120,34 @@ public class Player : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.DrawSphere(puntoInteraccion, radioInteraccion);
+    }
+
+    public void TakeDamage(float amount)
+    {
+        if (isGameOver)
+            return;
+
+        isReceivingDamage = true;
+
+        health -= amount;
+
+        if (health <= 0)
+        {
+            lives--;
+
+            if (lives > 0)
+            {
+                Debug.Log("☠️ Perdiste una vida. Reiniciando salud.");
+                health = 100;
+            }
+            else
+            {
+                health = 0;
+                isGameOver = true;
+                Debug.Log("💀 Game Over");
+            }
+        }
+
+        isReceivingDamage = false;
     }
 }

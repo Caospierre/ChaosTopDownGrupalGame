@@ -52,26 +52,37 @@ namespace Prefab
 
         IEnumerator DamageLoop()
         {
-            while (blocks.Count > 0)
+            while (true)
             {
                 float waitTime = Random.Range(minInterval, maxInterval);
                 yield return new WaitForSeconds(waitTime);
 
-                blocks.RemoveAll(b => b == null || !b.IsAlive());
-                if (blocks.Count == 0) yield break;
+                List<WallBlock> aliveBlocks = blocks.FindAll(b => b != null && b.IsAlive());
+                if (aliveBlocks.Count == 0) yield break;
 
-                WallBlock target = blocks[Random.Range(0, blocks.Count)];
-                if (target != null && target.IsAlive())
+                WallBlock target = aliveBlocks[Random.Range(0, aliveBlocks.Count)];
+                if (target != null)
                 {
-                    int damage = Random.Range(minDamage, maxDamage + 1); // max exclusivo
-                    Debug.Log($"[Wall] Bloque {target.name} recibe {damage} de daño.");
-                    bool destroyed = target.TakeDamage(damage);
-                    if (destroyed)
-                    {
-                        blocks.Remove(target);
-                    }
+                    int damage = Random.Range(minDamage, maxDamage + 1);
+                    target.TakeDamage(damage);
                 }
             }
+        }
+
+        public void RebuildAll()
+        {
+            foreach (WallBlock block in blocks)
+            {
+                if (block != null && !block.IsAlive())
+                {
+                    block.Rebuild();
+                }
+            }
+        }
+
+        public List<WallBlock> GetBlocks()
+        {
+            return blocks;
         }
     }
 }

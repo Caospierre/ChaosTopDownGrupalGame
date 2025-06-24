@@ -14,6 +14,9 @@ namespace Prefab
         [Tooltip("Intervalo de tiempo (segundos) entre spawns")]
         public float spawnCooldown = 10f;
 
+        [HideInInspector]
+        public MonsterSpawnController controller;
+
         private List<GameObject> activeMonsters = new();
         private float lastSpawnTime = -Mathf.Infinity;
 
@@ -30,6 +33,8 @@ namespace Prefab
             GameObject monster = Instantiate(monsterPrefab, transform.position, Quaternion.identity);
             activeMonsters.Add(monster);
             lastSpawnTime = Time.time;
+
+            controller?.RegisterSpawn(); // Reporta al controlador
 
             return true;
         }
