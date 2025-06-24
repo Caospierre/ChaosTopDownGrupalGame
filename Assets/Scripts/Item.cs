@@ -8,7 +8,9 @@ public class Item : MonoBehaviour, Interactuable
     {
         try
         {
-            gameManager.Inventario.NuevoItem(misDatos);
+            ItemSO copia = Instantiate(misDatos); // 👈 clona el ScriptableObject
+            gameManager.Inventario.NuevoItem(copia);
+
             Debug.Log("→ Item agregado correctamente, ahora se destruirá");
             Destroy(this.gameObject);
         }

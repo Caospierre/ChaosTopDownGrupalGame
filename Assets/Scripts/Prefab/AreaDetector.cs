@@ -105,5 +105,15 @@ namespace Prefab
             else
                 Gizmos.DrawWireCube(transform.position, size);
         }
+        
+        public void SetColor(Color newColor)
+        {
+            lineColor = newColor;
+
+            if (lr == null)
+                lr = GetComponent<LineRenderer>();
+
+            lr.startColor = lr.endColor = newColor;
+        }
     }
 }

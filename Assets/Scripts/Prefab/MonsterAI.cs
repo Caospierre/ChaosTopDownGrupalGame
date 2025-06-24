@@ -7,7 +7,13 @@ namespace Prefab
         [Header("Config")]
         public float speed = 2f;
         public float wallDamagePerSecond = 1f;
+
+        [Header("Daño al jugador")]
         public float playerDamagePerSecond = 10f;
+        public float damageInterval = 3f;
+        private float damageTimer = 0f;
+
+        [Header("Movimiento")]
         public float standbyMoveDuration = 2f;
         public float standbyWaitDuration = 1f;
 
@@ -21,6 +27,9 @@ namespace Prefab
 
         [Header("Debug")]
         public string actualState;
+
+        [Header("Recompensas")]
+        public GameObject[] dropItems;
 
         private enum State { Standby, SeekWall, AttackWall, ChasePlayer }
         private State currentStateEnum = State.Standby;
@@ -51,6 +60,7 @@ namespace Prefab
         void Update()
         {
             actualState = currentStateEnum.ToString();
+            damageTimer += Time.deltaTime;
 
             switch (currentStateEnum)
             {
@@ -95,6 +105,9 @@ namespace Prefab
 
         void OnCollisionEnter2D(Collision2D collision)
         {
+            if (currentHealth <= 0)
+                return;
+
             if (collision.gameObject.CompareTag("Wall"))
             {
                 currentStateEnum = State.AttackWall;
@@ -121,26 +134,31 @@ namespace Prefab
             else if (collision.gameObject.CompareTag("Player"))
             {
                 HandlePlayerEnter(collision.gameObject);
-
-                Player player = collision.gameObject.GetComponent<Player>();
-                if (player != null)
-                {
-                    int damage = Mathf.CeilToInt(playerDamagePerSecond * Time.deltaTime);
-                    player.TakeDamage(damage);
-                }
+                AplicarDanioAlJugador(collision.gameObject);
             }
         }
 
         void OnCollisionStay2D(Collision2D collision)
         {
+            if (currentHealth <= 0)
+                return;
+
             if (collision.gameObject.CompareTag("Player"))
             {
-                Player player = collision.gameObject.GetComponent<Player>();
-                if (player != null)
-                {
-                    int damage = Mathf.CeilToInt(playerDamagePerSecond * Time.deltaTime);
-                    player.TakeDamage(damage);
-                }
+                AplicarDanioAlJugador(collision.gameObject);
+            }
+        }
+
+        private void AplicarDanioAlJugador(GameObject target)
+        {
+            if (damageTimer < damageInterval)
+                return;
+
+            Player player = target.GetComponent<Player>();
+            if (player != null)
+            {
+                player.TakeDamage(playerDamagePerSecond);
+                damageTimer = 0f;
             }
         }
 
@@ -266,8 +284,31 @@ namespace Prefab
 
             if (currentHealth <= 0)
             {
+                DropRandomItem();
+                CambiarColorArea(Color.gray);
                 Destroy(gameObject);
             }
+            else
+            {
+                CambiarColorArea(Color.yellow);
+            }
+        }
+
+        private void DropRandomItem()
+        {
+            if (dropItems == null || dropItems.Length == 0) return;
+
+            int index = Random.Range(0, dropItems.Length);
+            GameObject item = dropItems[index];
+
+            if (item != null)
+                Instantiate(item, transform.position, Quaternion.identity);
+        }
+
+        public void CambiarColorArea(Color nuevoColor)
+        {
+            if (areaDetector != null)
+                areaDetector.SetColor(nuevoColor);
         }
     }
 }

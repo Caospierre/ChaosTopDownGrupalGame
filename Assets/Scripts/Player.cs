@@ -1,5 +1,8 @@
 using System.Collections;
+using Prefab;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -16,19 +19,30 @@ public class Player : MonoBehaviour
     [SerializeField] private float radioInteraccion;
     private bool interactuando;
 
-    [Tooltip("Vidas")]
-    [SerializeField] public float lives = 3f;
-
-    [Tooltip("Salud")]
-    [SerializeField] public float health = 100;
-
-    [Tooltip("¿El jugador ya perdió todas las vidas?")]
-    public bool isGameOver = false;
-
     [Tooltip("¿Está recibiendo daño actualmente?")]
     public bool isReceivingDamage = false;
 
+    [Header("Daño del arma")]
+    [SerializeField] private float minWeaponDamage = 5f;
+    [SerializeField] private float maxWeaponDamage = 20f;
+
     public bool Interactuando { get => interactuando; set => interactuando = value; }
+
+    public float Lives
+    {
+        get => GameSceneController.GetLives();
+        set => GameSceneController.SetLives(Mathf.FloorToInt(value));
+    }
+
+    public float Health
+    {
+        get => GameSceneController.GetHealth();
+        set => GameSceneController.SetHealth(Mathf.FloorToInt(value));
+    }
+
+    public bool isGameOver => Lives <= 0;
+
+    private MonsterAI ultimoMonsterDetectado;
 
     private void Awake()
     {
@@ -48,6 +62,17 @@ public class Player : MonoBehaviour
         MovimientoYAnimaciones();
     }
 
+    private void LecturaInputs()
+    {
+        if (inputV == 0)
+            inputH = Input.GetAxisRaw("Horizontal");
+        if (inputH == 0)
+            inputV = Input.GetAxisRaw("Vertical");
+
+        if (Input.GetKeyDown(KeyCode.E))
+            LanzarInteraccion();
+    }
+
     private void MovimientoYAnimaciones()
     {
         if (!interactuando && !moviendo && (inputH != 0 || inputV != 0))
@@ -60,43 +85,12 @@ public class Player : MonoBehaviour
             puntoInteraccion = puntoDestino;
 
             colliderDelante = LanzarCheck();
-
             if (!colliderDelante)
-            {
                 StartCoroutine(Mover());
-            }
         }
         else if (inputH == 0 && inputV == 0)
         {
             anim.SetBool("andando", false);
-        }
-    }
-
-    private void LecturaInputs()
-    {
-        if (inputV == 0)
-        {
-            inputH = Input.GetAxisRaw("Horizontal");
-        }
-        if (inputH == 0)
-        {
-            inputV = Input.GetAxisRaw("Vertical");
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            LanzarInteraccion();
-        }
-    }
-
-    private void LanzarInteraccion()
-    {
-        colliderDelante = LanzarCheck();
-        if (colliderDelante)
-        {
-            if (colliderDelante.TryGetComponent(out Interactuable interactuable))
-            {
-                interactuable.Interactuar();
-            }
         }
     }
 
@@ -112,6 +106,13 @@ public class Player : MonoBehaviour
         moviendo = false;
     }
 
+    private void LanzarInteraccion()
+    {
+        colliderDelante = LanzarCheck();
+        if (colliderDelante && colliderDelante.TryGetComponent(out Interactuable interactuable))
+            interactuable.Interactuar();
+    }
+
     private Collider2D LanzarCheck()
     {
         return Physics2D.OverlapCircle(puntoInteraccion, radioInteraccion);
@@ -122,29 +123,60 @@ public class Player : MonoBehaviour
         Gizmos.DrawSphere(puntoInteraccion, radioInteraccion);
     }
 
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (!collision.gameObject.CompareTag("Monster"))
+            return;
+
+        Debug.Log("Monster collision");
+
+        GameObject armaActual = GameSceneController.Instance.currentWeapon;
+        var itemHolder = armaActual.GetComponent<ItemHolder>();
+        if (itemHolder == null || itemHolder.item == null)
+            return;
+
+        if (!float.TryParse(itemHolder.item.health, out float weaponHealth) || weaponHealth <= 0f)
+            return;
+
+        int damage = Mathf.FloorToInt(Random.Range(minWeaponDamage, maxWeaponDamage));
+
+        if (collision.gameObject.TryGetComponent(out MonsterAI monster))
+        {
+            monster.TakeDamage(damage);
+
+            if (ultimoMonsterDetectado != null && ultimoMonsterDetectado != monster)
+                ultimoMonsterDetectado.CambiarColorArea(Color.red);
+
+            monster.CambiarColorArea(Color.blue);
+            ultimoMonsterDetectado = monster;
+        }
+
+        int desgaste = Mathf.FloorToInt(damage / 100f);
+        GameSceneController.Instance.ReducirDurabilidadActualWeapon(desgaste);
+    }
+
     public void TakeDamage(float amount)
     {
         if (isGameOver)
             return;
 
         isReceivingDamage = true;
+        Health -= amount;
 
-        health -= amount;
-
-        if (health <= 0)
+        if (Health <= 0)
         {
-            lives--;
+            Lives--;
 
-            if (lives > 0)
+            if (Lives > 0)
             {
                 Debug.Log("☠️ Perdiste una vida. Reiniciando salud.");
-                health = 100;
+                Health = 100;
             }
             else
             {
-                health = 0;
-                isGameOver = true;
+                Health = 0;
                 Debug.Log("💀 Game Over");
+                GameSceneController.Instance.GameOver();
             }
         }
 

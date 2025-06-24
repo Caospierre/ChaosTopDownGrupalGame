@@ -1,4 +1,5 @@
 using System;
+using Prefab;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,42 +22,50 @@ public class SistemaInventario : MonoBehaviour
 
     private void BotonClickado(int indiceBoton)
     {
-        if (!botones[indiceBoton].gameObject.activeSelf)
-            return;
-
-        Debug.Log("Botón clickado: " + indiceBoton);
-
-        int duracion = ObtenerDuracionDesdeBoton(botones[indiceBoton]);
-        if (duracion <= 0)
+        var holder = botones[indiceBoton].GetComponent<ItemHolder>();
+        if (holder == null || holder.item == null)
         {
-            botones[indiceBoton].gameObject.SetActive(false);
-            ActualizarInventarioVisual();
+            Debug.LogWarning("❌ ItemHolder o item nulo en botón " + indiceBoton);
             return;
         }
 
-        Image imagenOrigen = botones[indiceBoton].GetComponent<Image>() ?? botones[indiceBoton].GetComponentInChildren<Image>();
-        Transform origenHealth = botones[indiceBoton].transform.Find("Health");
-
-        // Si actualWeapon está vacío, simplemente asignar
-        Image imagenDestino = actualWeapon.GetComponent<Image>();
-        Transform destinoHealth = actualWeapon.transform.Find("Health");
-
-        if (imagenDestino != null && imagenOrigen != null)
-            imagenDestino.sprite = imagenOrigen.sprite;
-
-        if (destinoHealth != null && origenHealth != null)
+        var armaHolder = actualWeapon.GetComponent<ItemHolder>();
+        if (armaHolder != null && armaHolder.item != null && armaHolder.HealthValue > 0f)
         {
-            TextMeshProUGUI origenTMP = origenHealth.GetComponent<TextMeshProUGUI>();
-            TextMeshProUGUI destinoTMP = destinoHealth.GetComponent<TextMeshProUGUI>();
+            Debug.Log("↩️ Arma actual tiene salud > 0. Se devolverá al inventario.");
+            NuevoItem(armaHolder.item);
+        }
 
-            if (origenTMP != null && destinoTMP != null)
+        Debug.Log($"🟡 Click en botón {indiceBoton} con item: {holder.ItemName}");
+
+        Image imagenDestino = actualWeapon.GetComponent<Image>();
+        if (imagenDestino != null)
+        {
+            imagenDestino.sprite = holder.Icono;
+            imagenDestino.color = Color.white;
+            Debug.Log("🟢 Sprite de arma actualizado.");
+        }
+
+        Transform destinoHealth = actualWeapon.transform.Find("Health");
+        if (destinoHealth != null)
+        {
+            TextMeshProUGUI destinoTMP = destinoHealth.GetComponent<TextMeshProUGUI>();
+            if (destinoTMP != null)
             {
-                destinoTMP.text = origenTMP.text;
+                destinoTMP.text = holder.HealthValue.ToString("0");
                 destinoHealth.gameObject.SetActive(true);
+                Debug.Log($"🟢 Health visual del arma actualizado a {holder.HealthValue}");
             }
         }
 
-        // Desactivar el botón y reorganizar
+        if (armaHolder != null)
+        {
+            armaHolder.item = Instantiate(holder.item);
+            armaHolder.CargarPreviewDesdeItem();
+            Debug.Log("🟢 Item asignado al arma actual.");
+        }
+
+        holder.item = null;
         botones[indiceBoton].gameObject.SetActive(false);
         ActualizarInventarioVisual();
     }
@@ -65,23 +74,27 @@ public class SistemaInventario : MonoBehaviour
     {
         for (int i = 0; i < botones.Length; i++)
         {
+            var holder = botones[i].GetComponent<ItemHolder>();
             if (!botones[i].gameObject.activeSelf)
             {
-                Button boton = botones[i];
-                boton.gameObject.SetActive(true);
+                botones[i].gameObject.SetActive(true);
+                holder.item = Instantiate(datosItem);
+                holder.CargarPreviewDesdeItem();
 
-                Image image = boton.GetComponent<Image>() ?? boton.GetComponentInChildren<Image>();
+                Debug.Log($"🆕 Nuevo item '{holder.ItemName}' con {holder.HealthValue} salud asignado a slot {i}.");
+
+                Image image = botones[i].GetComponent<Image>();
                 if (image != null)
-                    image.sprite = datosItem.icono;
+                    image.sprite = holder.Icono;
 
-                Transform healthTransform = boton.transform.Find("Health");
+                Transform healthTransform = botones[i].transform.Find("Health");
                 if (healthTransform != null)
                 {
                     TextMeshProUGUI texto = healthTransform.GetComponent<TextMeshProUGUI>();
                     if (texto != null)
                     {
+                        texto.text = holder.HealthValue.ToString("0");
                         healthTransform.gameObject.SetActive(true);
-                        texto.text = "Duración: " + datosItem.haelth;
                     }
                 }
 
@@ -89,7 +102,7 @@ public class SistemaInventario : MonoBehaviour
             }
         }
 
-        Debug.LogWarning("No hay espacio en el inventario.");
+        Debug.LogWarning("❌ Inventario lleno. No se pudo agregar nuevo item.");
     }
 
     private void ActualizarInventarioVisual()
@@ -98,67 +111,46 @@ public class SistemaInventario : MonoBehaviour
 
         for (int i = 0; i < botones.Length; i++)
         {
-            if (!botones[i].gameObject.activeSelf)
+            var origenHolder = botones[i].GetComponent<ItemHolder>();
+            if (!botones[i].gameObject.activeSelf || origenHolder.item == null)
                 continue;
 
             if (i != destino)
             {
-                Button temp = botones[destino];
+                var destinoHolder = botones[destino].GetComponent<ItemHolder>();
+                destinoHolder.item = origenHolder.item;
+                destinoHolder.CargarPreviewDesdeItem();
 
-                Image imgOrigen = botones[i].GetComponent<Image>() ?? botones[i].GetComponentInChildren<Image>();
-                Image imgDestino = temp.GetComponent<Image>() ?? temp.GetComponentInChildren<Image>();
-                if (imgOrigen != null && imgDestino != null)
-                {
-                    imgDestino.sprite = imgOrigen.sprite;
-                    imgOrigen.sprite = null;
-                }
+                Image imgDestino = botones[destino].GetComponent<Image>();
+                if (imgDestino != null)
+                    imgDestino.sprite = destinoHolder.Icono;
 
-                Transform origenHealth = botones[i].transform.Find("Health");
-                Transform destinoHealth = temp.transform.Find("Health");
-                if (origenHealth != null && destinoHealth != null)
+                Transform destinoHealth = botones[destino].transform.Find("Health");
+                if (destinoHealth != null)
                 {
-                    TextMeshProUGUI origenTMP = origenHealth.GetComponent<TextMeshProUGUI>();
                     TextMeshProUGUI destinoTMP = destinoHealth.GetComponent<TextMeshProUGUI>();
-                    if (origenTMP != null && destinoTMP != null)
+                    if (destinoTMP != null)
                     {
-                        destinoTMP.text = origenTMP.text;
-                        origenTMP.text = "";
+                        destinoTMP.text = destinoHolder.HealthValue.ToString("0");
                         destinoHealth.gameObject.SetActive(true);
-                        origenHealth.gameObject.SetActive(false);
                     }
                 }
 
-                botones[destino].gameObject.SetActive(true);
+                origenHolder.item = null;
                 botones[i].gameObject.SetActive(false);
+                Debug.Log($"🔄 Item movido de slot {i} a {destino}");
             }
 
+            botones[destino].gameObject.SetActive(true);
             destino++;
         }
 
         for (int j = destino; j < botones.Length; j++)
         {
             botones[j].gameObject.SetActive(false);
+            var holder = botones[j].GetComponent<ItemHolder>();
+            if (holder != null) holder.item = null;
         }
-    }
-
-    private int ObtenerDuracionDesdeBoton(Button boton)
-    {
-        Transform healthTransform = boton.transform.Find("Health");
-        if (healthTransform != null)
-        {
-            TextMeshProUGUI texto = healthTransform.GetComponent<TextMeshProUGUI>();
-            if (texto != null)
-            {
-                string contenido = texto.text;
-                string[] partes = contenido.Split(':');
-                if (partes.Length == 2 && int.TryParse(partes[1].Trim(), out int valor))
-                {
-                    return valor;
-                }
-            }
-        }
-
-        return -1;
     }
 
     void Update()
@@ -166,6 +158,7 @@ public class SistemaInventario : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             marcoInventario.SetActive(!marcoInventario.activeSelf);
+            Debug.Log("📂 Inventario toggled.");
         }
     }
 }

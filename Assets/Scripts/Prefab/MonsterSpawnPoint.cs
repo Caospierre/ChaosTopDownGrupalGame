@@ -34,14 +34,26 @@ namespace Prefab
             activeMonsters.Add(monster);
             lastSpawnTime = Time.time;
 
-            controller?.RegisterSpawn(); // Reporta al controlador
+            controller?.RegisterSpawn();
 
             return true;
         }
 
         private void Cleanup()
         {
-            activeMonsters.RemoveAll(m => m == null);
+            for (int i = activeMonsters.Count - 1; i >= 0; i--)
+            {
+                if (activeMonsters[i] == null)
+                {
+                    activeMonsters.RemoveAt(i);
+                    controller?.RegisterDeath();
+                }
+            }
+        }
+        
+        public int GetMaxMonsters()
+        {
+            return maxMonsters;
         }
     }
 }

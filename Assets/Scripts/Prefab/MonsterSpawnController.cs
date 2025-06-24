@@ -12,16 +12,23 @@ namespace Prefab
         [Tooltip("Total de monstruos generados en esta partida")]
         public int totalSpawnedMonsters = 0;
 
+        [Tooltip("Cantidad máxima de monstruos que se pueden generar entre todos los puntos")]
+        public int totalPossibleMonsters = 0;
+
+        
+        [Tooltip("Cantidad  de monstruos destruidos")]
+        public int totalDeadMonsters = 0;
+
         private List<MonsterSpawnPoint> spawnPoints = new();
 
         void Start()
         {
             spawnPoints.AddRange(FindObjectsOfType<MonsterSpawnPoint>());
 
-            // Pasar referencia a cada spawn point
             foreach (var sp in spawnPoints)
             {
                 sp.controller = this;
+                totalPossibleMonsters += sp.GetMaxMonsters();
             }
 
             StartCoroutine(SpawnLoop());
@@ -43,6 +50,21 @@ namespace Prefab
         public void RegisterSpawn()
         {
             totalSpawnedMonsters++;
+        }
+
+        public int GetTotalSpawnedMonsters()
+        {
+            return totalSpawnedMonsters;
+        }
+        
+        public int GetMonsterForDestroy()
+        {
+            return totalSpawnedMonsters-totalDeadMonsters;
+        }
+        public void RegisterDeath()
+        {
+            totalDeadMonsters++;
+            Debug.Log($"💀 Monstruo destruido. Total muertos: {totalDeadMonsters}");
         }
     }
 }

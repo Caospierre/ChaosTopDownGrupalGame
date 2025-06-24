@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   danho: 20
   nombre: Pico
-  haelth: 100
+  health: 100
   nivelNecesario: 15
   icono: {fileID: 21300000, guid: 6906a607766924185976377b2a0f8166, type: 3}
