@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   danho: 80
   nombre: Bomba
+  haelth: 100
   nivelNecesario: 30
   icono: {fileID: 21300000, guid: 90a177c6fcc6045b3817e7b3d2b189f0, type: 3}

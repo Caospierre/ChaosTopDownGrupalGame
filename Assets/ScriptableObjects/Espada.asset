@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   danho: 60
   nombre: Espada
+  haelth: 100
   nivelNecesario: 25
   icono: {fileID: 21300000, guid: ad4bde4ff881b433c9782cb194049b0f, type: 3}
