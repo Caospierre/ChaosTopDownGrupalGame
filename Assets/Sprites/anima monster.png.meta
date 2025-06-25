@@ -1,10 +1,25 @@
 fileFormatVersion: 2
-guid: a70d9949ca0f04a769855d6289d27102
+guid: 01abe10e7893e034abfffeb4d9673852
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2182124076254010665
-    second: rock_0
+      213: -3902299383062078142
+    second: anima monster_0
+  - first:
+      213: 6443613012978938774
+    second: anima monster_1
+  - first:
+      213: -7868099853879244401
+    second: anima monster_2
+  - first:
+      213: -3779238314254832313
+    second: anima monster_3
+  - first:
+      213: -3722041705121166302
+    second: anima monster_4
+  - first:
+      213: -948205978796585720
+    second: anima monster_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -37,7 +52,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -96,40 +111,93 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: rock_0
+      name: anima monster_0
       rect:
         serializedVersion: 2
-        x: 71
-        y: 57
-        width: 887
-        height: 864
+        x: 3
+        y: 536
+        width: 379
+        height: 395
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7d26d0bc6b987b1e0800000000000000
-      internalID: -2182124076254010665
+      spriteID: 24ddb59e26f38d9c0800000000000000
+      internalID: -3902299383062078142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: anima monster_2
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 121
+        width: 348
+        height: 395
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 693b1b445ef4c6950800000000000000
+      internalID: 6443613012978938774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: anima monster_1
+      rect:
+        serializedVersion: 2
+        x: 559
+        y: 536
+        width: 348
+        height: 374
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f898930bed4eec290800000000000000
+      internalID: -7868099853879244401
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: anima monster_3
+      rect:
+        serializedVersion: 2
+        x: 545
+        y: 121
+        width: 379
+        height: 374
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 80d8de3afab47d2f0800000000000000
+      internalID: -948205978796585720
       vertices: []
       indices: 
       edges: []
@@ -138,7 +206,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: c9cf3a74ac5e5a247ac14a22c40e3c13
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +216,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      rock_0: -2182124076254010665
+      anima monster_0: -3902299383062078142
+      anima monster_1: -7868099853879244401
+      anima monster_2: 6443613012978938774
+      anima monster_3: -948205978796585720
+      anima monster_4: -3722041705121166302
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
