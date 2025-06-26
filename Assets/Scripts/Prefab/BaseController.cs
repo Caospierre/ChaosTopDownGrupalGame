@@ -106,7 +106,22 @@ namespace Prefab
         private void OnSafeAreaEnter(GameObject player)
         {
             Debug.Log($"❤️ Entró a zona segura: {player.name}");
+
+            if (player.TryGetComponent(out Player playerScript))
+            {
+                if (playerScript.Health < 100)
+                {
+                    playerScript.Health = 100;
+                    Debug.Log("🩺 Salud del jugador restaurada en la zona segura.");
+                }
+            }
         }
+
+        public List<Wall> GetWalls()
+        {
+            return walls;
+        }
+
 
         private void OnSafeAreaExit(GameObject player)
         {

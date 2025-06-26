@@ -135,6 +135,9 @@ public class Player : MonoBehaviour
         if (itemHolder == null || itemHolder.item == null)
             return;
 
+        if (itemHolder.item.name == "Wall")
+            return;
+
         if (!float.TryParse(itemHolder.item.health, out float weaponHealth) || weaponHealth <= 0f)
             return;
 
@@ -170,6 +173,7 @@ public class Player : MonoBehaviour
             if (Lives > 0)
             {
                 Debug.Log("☠️ Perdiste una vida. Reiniciando salud.");
+                GameSceneController.Instance.RespawnStartPlayer();
                 Health = 100;
             }
             else

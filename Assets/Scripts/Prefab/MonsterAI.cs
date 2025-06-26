@@ -287,6 +287,8 @@ namespace Prefab
                 DropRandomItem();
                 CambiarColorArea(Color.gray);
                 Destroy(gameObject);
+                GameSceneController.Instance.SetDestroyedMonster();
+
             }
             else
             {

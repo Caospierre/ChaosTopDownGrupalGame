@@ -29,6 +29,8 @@ namespace Prefab
             {
                 sp.controller = this;
                 totalPossibleMonsters += sp.GetMaxMonsters();
+                GameSceneController.Instance.SetTotalMonster(totalPossibleMonsters);
+
             }
 
             StartCoroutine(SpawnLoop());
@@ -64,7 +66,6 @@ namespace Prefab
         public void RegisterDeath()
         {
             totalDeadMonsters++;
-            Debug.Log($"💀 Monstruo destruido. Total muertos: {totalDeadMonsters}");
         }
     }
 }

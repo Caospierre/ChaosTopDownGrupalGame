@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Wall
   m_EditorClassIdentifier: 
   danho: 80
-  nombre: Bomba
+  nombre: Wall
   health: 100
   nivelNecesario: 30
   icono: {fileID: -2084811990, guid: b8814c83d33f044eaa43a507df945000, type: 3}

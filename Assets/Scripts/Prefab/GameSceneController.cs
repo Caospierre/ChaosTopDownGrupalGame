@@ -11,12 +11,32 @@ namespace Prefab
         public GameObject baseZone;
         public GameObject monsterController;
         public GameObject player;
+        public GameObject start;
         public GameObject currentWeapon;
+
+        [Header("Configuración de Nivel")]
+        [Tooltip("Índice del siguiente nivel")]
+        [SerializeField] private int nextLevel = 0;
+
+        [Tooltip("¿Este nivel es el fin del juego?")]
+        [SerializeField] private bool finishGame = false;
+
+        [Tooltip("¿Verificar destrucción de la base para Game Over?")]
+        [SerializeField] private bool checkBaseDestruction = true;
 
         [Header("Estado del Jugador")]
         [SerializeField] private int health = 100;
         [SerializeField] private int lives = 3;
+        [SerializeField] private int totalMonster = 120;
+        [SerializeField] private int destroyedMonster = 0;
 
+        [Header("Estado de la Base (solo lectura)")]
+        [SerializeField] private int totalBlocks;
+        [SerializeField] private int aliveBlocks;
+        [SerializeField] private int destroyedBlocks;
+        [SerializeField] private int wallsAlive;
+
+        private bool baseDestroyedHandled = false;
         private AudioManager audioManager;
 
         public static GameSceneController Instance { get; private set; }
@@ -37,6 +57,25 @@ namespace Prefab
             audioManager = AudioManager.Instance;
         }
 
+        void Update()
+        {
+            if (checkBaseDestruction && !baseDestroyedHandled && baseZone != null)
+            {
+                var baseController = baseZone.GetComponent<BaseController>();
+
+                totalBlocks = baseController.totalBlocks;
+                aliveBlocks = baseController.aliveBlocks;
+                destroyedBlocks = baseController.destroyedBlocks;
+                
+                if (aliveBlocks == 0)
+                {
+                    baseDestroyedHandled = true;
+                    Debug.Log("💣 ¡Base destruida! Fin del juego.");
+                    GameOver();
+                }
+            }
+        }
+
         public void PauseGame()
         {
             Time.timeScale = 0f;
@@ -47,6 +86,14 @@ namespace Prefab
         {
             Time.timeScale = 1f;
             audioManager?.ResumeBackground();
+        }
+
+        public void RespawnStartPlayer()
+        {
+            if (player != null && start != null)
+            {
+                player.transform.position = start.transform.position;
+            }
         }
 
         public void RestartGame()
@@ -77,76 +124,55 @@ namespace Prefab
             return Instance != null ? Instance.lives : 0;
         }
 
-        public static void ApplyDamage(int amount)
+        public void SetTotalMonster(int value)
         {
-            if (Instance == null) return;
+            if (Instance != null)
+                Instance.totalMonster = value;
+        }
 
-            Instance.health -= amount;
+        public void SetDestroyedMonster()
+        {
+            destroyedMonster++;
+            Debug.Log($"💀 Monstruo destruido. Total muertos: {destroyedMonster}");
 
-            if (Instance.health <= 0)
+            if (destroyedMonster >= totalMonster)
             {
-                Instance.lives--;
+                Debug.Log("🎉 Todos los monstruos han sido destruidos. ¡Ganaste!");
 
-                if (Instance.lives > 0)
-                {
-                    Instance.health = 100;
-                }
+                if (finishGame)
+                    SceneManager.LoadScene("WinGame");
                 else
-                {
-                    Instance.health = 0;
-                    Instance.GameOver();
-                }
+                    SceneManager.LoadScene(nextLevel);
             }
         }
 
         public void GameOver()
         {
-            Debug.Log("Game Over");
-            PauseGame();
+            SceneManager.LoadScene("GameOver");
         }
 
         public void ReducirDurabilidadActualWeapon(int cantidad)
         {
-            if (currentWeapon == null)
-            {
-                Debug.LogWarning("⛔ currentWeapon es null.");
-                return;
-            }
+            if (currentWeapon == null) return;
 
             var itemHolder = currentWeapon.GetComponent<ItemHolder>();
-            if (itemHolder == null || itemHolder.item == null)
-            {
-                Debug.LogWarning("⛔ itemHolder o item nulo en currentWeapon.");
-                return;
-            }
+            if (itemHolder == null || itemHolder.item == null) return;
 
             float weaponHealth = itemHolder.HealthValue;
-            if (weaponHealth <= 0f)
-            {
-                Debug.Log("🔁 Arma ya está rota, no se reduce más.");
-                return;
-            }
+            if (weaponHealth <= 0f) return;
 
             weaponHealth = Mathf.Max(0f, weaponHealth - cantidad);
             itemHolder.item.health = weaponHealth.ToString("0");
 
-            Debug.Log($"🔻 Durabilidad del arma reducida en {cantidad}, nueva salud: {weaponHealth}");
-
-            Transform healthTransform = currentWeapon.transform.Find("Health");
+            var healthTransform = currentWeapon.transform.Find("Health");
             if (healthTransform != null)
             {
                 var healthTMP = healthTransform.GetComponent<TextMeshProUGUI>();
                 if (healthTMP != null)
-                {
                     healthTMP.text = itemHolder.item.health;
-                    Debug.Log("🔄 Texto de durabilidad actualizado.");
-                }
 
                 if (weaponHealth <= 0f)
-                {
                     healthTransform.gameObject.SetActive(false);
-                    Debug.Log("⚠️ Texto de salud ocultado por durabilidad 0.");
-                }
             }
 
             if (weaponHealth <= 0f)
@@ -154,8 +180,6 @@ namespace Prefab
                 var weaponImage = currentWeapon.GetComponent<Image>();
                 if (weaponImage != null)
                     weaponImage.sprite = null;
-
-                Debug.Log("⚔️ El arma se rompió y fue visualmente ocultada.");
             }
         }
     }
