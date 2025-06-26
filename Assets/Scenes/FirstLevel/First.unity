@@ -985,7 +985,7 @@ GameObject:
   - component: {fileID: 264855881}
   m_Layer: 6
   m_Name: Colisiones
-  m_TagString: Untagged
+  m_TagString: Colisiones
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48726,6 +48726,9 @@ MonoBehaviour:
   tiempoEntreLetras: 0.03
   cuadroDialogo: {fileID: 119588628}
   textoDialogo: {fileID: 531777038}
+  mostrarAlInicio: 0
+  autoAvanzarFrases: 0
+  tiempoFinalEspera: 1.5
 --- !u!1001 &1806722935
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -111846,10 +111849,16 @@ MonoBehaviour:
   player: {fileID: 2127606543}
   start: {fileID: 0}
   currentWeapon: {fileID: 2042943787}
+  nextLevel: 0
+  finishGame: 0
+  checkBaseDestruction: 1
   health: 100
   lives: 3
   totalMonster: 120
   destroyedMonster: 120
+  totalBlocks: 0
+  aliveBlocks: 0
+  destroyedBlocks: 0
 --- !u!224 &2033330143 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3089091149094834989, guid: f953c5360b1b04f50bbea9c309ea7b58, type: 3}

@@ -6,20 +6,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class Pausa : MonoBehaviour
 {
     [SerializeField] private GameObject canvas1;
     [SerializeField] private GameObject canvas2;
     [SerializeField] private AudioClip uiClickSound;
-    //[SerializeField] private Animator transitionAnim;
-
-    private GameObject player;
-    //private SistemaVidasPlayer sistemaVidas;
+    private Player player;
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("PlayerHitBox");
-        //sistemaVidas = player.gameObject.GetComponent<SistemaVidasPlayer>();
+        player = FindAnyObjectByType<Player>();
     }
 
     private void Update()
@@ -44,11 +39,11 @@ public class Pausa : MonoBehaviour
                 Time.timeScale = 0;
                 if (player != null)
                 {
-                    /*Player2 playerScript = player.GetComponent<Player2>();
+                    Player playerScript = player.GetComponent<Player>();
                     if (playerScript != null)
                     {
                         playerScript.enabled = false;
-                    }*/
+                    }
                 }
             }
         }
@@ -61,11 +56,11 @@ public class Pausa : MonoBehaviour
         Time.timeScale = 1;
         if (player != null)
         {
-            /*Player2 playerScript = player.GetComponent<Player2>();
+            Player playerScript = player.GetComponent<Player>();
             if (playerScript != null)
             {
                 playerScript.enabled = true;
-            }*/
+            }
                 }
             }
 
@@ -93,12 +88,6 @@ public class Pausa : MonoBehaviour
         SceneManager.LoadScene(1);
         PlayClickSound();
     }
-    /*IEnumerator ChangeToScene0()
-    {
-        transitionAnim.SetTrigger("exit");
-        yield return new WaitForSeconds(1f);
-        SceneManager.LoadScene(1);
-    }*/
 
     void PlayClickSound()
     {

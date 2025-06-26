@@ -43440,7 +43440,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 291.2928, y: 50}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &351399688
 MonoBehaviour:
@@ -43496,8 +43496,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -44082,11 +44082,11 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 899851585}
   - {fileID: 586379133}
   - {fileID: 896145052}
   - {fileID: 695467104}
   - {fileID: 2076604849}
+  - {fileID: 899851585}
   - {fileID: 3114619577675738885}
   - {fileID: 4912898769054862760}
   - {fileID: 7171311114257227486}
@@ -44142,6 +44142,8 @@ MonoBehaviour:
   maxLife: 100
   heartPrefab: {fileID: 4807815862688176350, guid: b5c3dc7d2ed7d554d81e13784d8ddf6d, type: 3}
   heartContainer: {fileID: 695467104}
+  texto1: {fileID: 351399688}
+  texto2: {fileID: 574077185}
 --- !u!1001 &475709628
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44625,7 +44627,7 @@ GameObject:
   - component: {fileID: 574077186}
   - component: {fileID: 574077185}
   m_Layer: 5
-  m_Name: Monters
+  m_Name: Monsters
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44648,7 +44650,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 334.0307, y: 50}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &574077185
 MonoBehaviour:
@@ -44670,7 +44672,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Monsters : 120'
+  m_text: 'Enemigos restantes: 130'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: e73a58f6e2794ae7b1b7e50b7fb811b0, type: 2}
@@ -44704,8 +44706,8 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -111765,8 +111767,8 @@ MonoBehaviour:
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0

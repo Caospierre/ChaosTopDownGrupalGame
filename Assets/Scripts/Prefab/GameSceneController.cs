@@ -129,6 +129,21 @@ namespace Prefab
                 Instance.totalMonster = value;
         }
 
+        public static int GetAliveBlocks()
+        {
+            return Instance != null ? Instance.aliveBlocks : 0;
+        }
+
+        public static int GetDestroyedMonsters()
+        {
+            return Instance != null ? Instance.destroyedMonster : 0;
+        }
+
+        public static int GetTotalMonsters()
+        {
+            return Instance != null ? Instance.totalMonster : 0;
+        }
+
         public void SetDestroyedMonster()
         {
             destroyedMonster++;
