@@ -48720,12 +48720,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 11400000, guid: 0101ab3b06e1d994ca3b076ed171f15f, type: 2}
   frases:
-  - Hola aventurero
-  - 'Te encuentras en un ambiente muy hostil '
-  - Esta es mi tercera frase
+  - "Hola, Chaos... has despertado en un entorno hostil. Esta base es tu \xFAnica
+    defensa."
+  - "Tu misi\xF3n es clara: debes eliminar a todos los monstruos antes de que destruyan
+    la base."
+  - Presiona 'E' para hablar conmigo o recoger objetos, y 'I' para abrir tu inventario
+    y equiparte.
+  - "Si est\xE1s cerca de un enemigo y tienes un arma equipada, atacar\xE1s autom\xE1ticamente,
+    pero cuidado: las armas se desgastan."
+  - "Usa los materiales recolectados para reparar paredes destruidas. Ac\xE9rcate
+    con el material equipado y refuerza la base antes de que sea demasiado tarde."
   tiempoEntreLetras: 0.03
   cuadroDialogo: {fileID: 119588628}
   textoDialogo: {fileID: 531777038}
+  mostrarAlInicio: 1
+  autoAvanzarFrases: 1
+  tiempoFinalEspera: 1.5
 --- !u!1001 &1806722935
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -111846,10 +111856,16 @@ MonoBehaviour:
   player: {fileID: 2127606543}
   start: {fileID: 0}
   currentWeapon: {fileID: 2042943787}
+  nextLevel: 0
+  finishGame: 0
+  checkBaseDestruction: 1
   health: 100
   lives: 3
   totalMonster: 120
   destroyedMonster: 120
+  totalBlocks: 0
+  aliveBlocks: 0
+  destroyedBlocks: 0
 --- !u!224 &2033330143 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3089091149094834989, guid: f953c5360b1b04f50bbea9c309ea7b58, type: 3}
