@@ -34,7 +34,6 @@ namespace Prefab
         [SerializeField] private int totalBlocks;
         [SerializeField] private int aliveBlocks;
         [SerializeField] private int destroyedBlocks;
-        [SerializeField] private int wallsAlive;
 
         private bool baseDestroyedHandled = false;
         private AudioManager audioManager;
