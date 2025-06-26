@@ -985,7 +985,7 @@ GameObject:
   - component: {fileID: 264855881}
   m_Layer: 6
   m_Name: Colisiones
-  m_TagString: Colisiones
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48720,14 +48720,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 11400000, guid: 0101ab3b06e1d994ca3b076ed171f15f, type: 2}
   frases:
-  - Hola aventurero
-  - 'Te encuentras en un ambiente muy hostil '
-  - Esta es mi tercera frase
+  - "Hola, Chaos... has despertado en un entorno hostil. Esta base es tu \xFAnica
+    defensa."
+  - "Tu misi\xF3n es clara: debes eliminar a todos los monstruos antes de que destruyan
+    la base."
+  - Presiona 'E' para hablar conmigo o recoger objetos, y 'I' para abrir tu inventario
+    y equiparte.
+  - "Si est\xE1s cerca de un enemigo y tienes un arma equipada, atacar\xE1s autom\xE1ticamente,
+    pero cuidado: las armas se desgastan."
+  - "Usa los materiales recolectados para reparar paredes destruidas. Ac\xE9rcate
+    con el material equipado y refuerza la base antes de que sea demasiado tarde."
   tiempoEntreLetras: 0.03
   cuadroDialogo: {fileID: 119588628}
   textoDialogo: {fileID: 531777038}
-  mostrarAlInicio: 0
-  autoAvanzarFrases: 0
+  mostrarAlInicio: 1
+  autoAvanzarFrases: 1
   tiempoFinalEspera: 1.5
 --- !u!1001 &1806722935
 PrefabInstance:
