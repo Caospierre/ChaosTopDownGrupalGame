@@ -44142,6 +44142,8 @@ MonoBehaviour:
   maxLife: 100
   heartPrefab: {fileID: 4807815862688176350, guid: b5c3dc7d2ed7d554d81e13784d8ddf6d, type: 3}
   heartContainer: {fileID: 695467104}
+  texto1: {fileID: 0}
+  texto2: {fileID: 0}
 --- !u!1001 &475709628
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -112864,7 +112866,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &2127606548
 MonoBehaviour:
   m_ObjectHideFlags: 0
