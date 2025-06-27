@@ -19616,8 +19616,8 @@ MonoBehaviour:
   tiempoEntreLetras: 0.03
   cuadroDialogo: {fileID: 119588628}
   textoDialogo: {fileID: 531777038}
-  mostrarAlInicio: 0
-  autoAvanzarFrases: 0
+  mostrarAlInicio: 1
+  autoAvanzarFrases: 1
   tiempoFinalEspera: 0
 --- !u!1001 &1806722935
 PrefabInstance:
@@ -64187,8 +64187,8 @@ MonoBehaviour:
   start: {fileID: 1152268291}
   currentWeapon: {fileID: 2042943787}
   nextLevel: 0
-  finishGame: 0
-  checkBaseDestruction: 1
+  finishGame: 1
+  checkBaseDestruction: 0
   health: 100
   lives: 3
   totalMonster: 0

@@ -29,6 +29,14 @@ public class CanvasManager : MonoBehaviour
         PlayClickSound();
         SceneManager.LoadScene(1);
     }
+    
+    public void ClickBotonNivel2()
+    {
+        PlayClickSound();
+        SceneManager.LoadScene(4);
+    }
+
+    
 
     public void ClickBotonOpciones()
     {
